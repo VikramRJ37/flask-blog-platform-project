@@ -1,24 +1,160 @@
 {% extends 'base.html' %}
-{% block content %}
+{% block title %}My Account — The Inkwell{% endblock %}
 
-<div align="center">
-    <h1>Welcome to the page {{ current_user.username }}</h1>
-    <img src="{{ url_for('static', filename='profile_pics/'+(current_user.profile_image or 'default_profile.jpg')) }}">
-</div>
-<div class="container">
-    <form method="POST" action="" enctype="multipart/form-data">
-        <div class="mb-3">
-        {{form.hidden_tag()}}
-            {{form.username.label(class="form-label")}}{{form.username(class="form-control")}}
-        <div class="mb-3">
-            {{form.email.label(class="form-label")}}{{form.email(class="form-control")}}
-        </div>
-        <div class="mb-3">
-            {{form.picture.label(class="form-label")}}{{form.picture(class="form-control")}}
-        </div>
-        <div class="mb-3">
-            {{form.submit(class="btn btn-primary")}}
-        </div>
-    </form>
+{% block extra_styles %}
+<style>
+    .account-layout {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 3rem;
+        align-items: start;
+    }
+
+    @media (max-width: 700px) {
+        .account-layout { grid-template-columns: 1fr; }
+    }
+
+    /* ── PROFILE SIDEBAR ── */
+    .profile-sidebar {
+        text-align: center;
+    }
+
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--ink);
+        margin: 0 auto 1rem;
+        display: block;
+    }
+
+    .profile-avatar-placeholder {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: var(--ink);
+        color: #fff;
+        font-family: 'Playfair Display', serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+    }
+
+    .profile-sidebar .display-name {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+    }
+
+    .profile-sidebar .display-handle {
+        font-size: 0.85rem;
+        color: var(--muted);
+    }
+
+    .profile-sidebar .profile-divider {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 1.5rem 0;
+    }
+
+    .profile-stat {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        padding: 0.4rem 0;
+        color: var(--muted);
+    }
+
+    .profile-stat strong {
+        color: var(--ink);
+        font-weight: 500;
+    }
+
+    /* ── FORM PANEL ── */
+    .form-panel {
+        background: #fff;
+        border: 1.5px solid var(--border);
+        padding: 2rem 2.5rem;
+    }
+
+    .form-panel h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+    }
+
+    .form-panel .panel-subtitle {
+        font-size: 0.88rem;
+        color: var(--muted);
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .form-panel .ink-btn {
+        padding: 0.8rem 2rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="account-layout">
+    <!-- Sidebar -->
+    <aside class="profile-sidebar">
+        {% if current_user.profile_image %}
+            <img src="{{ url_for('static', filename='profile_pics/' + current_user.profile_image) }}"
+                 alt="{{ current_user.username }}"
+                 class="profile-avatar">
+        {% else %}
+            <div class="profile-avatar-placeholder">
+                {{ current_user.username[0].upper() }}
+            </div>
+        {% endif %}
+
+        <p class="display-name">{{ current_user.username }}</p>
+        <p class="display-handle">{{ current_user.email }}</p>
+
+        <hr class="profile-divider">
+
+        <a href="{{ url_for('users.user_posts', username=current_user.username) }}"
+           class="ink-btn" style="display:block; text-align:center; margin-bottom:0.75rem;">
+            View my posts
+        </a>
+    </aside>
+
+    <!-- Form Panel -->
+    <div class="form-panel ink-form">
+        <h2>Edit profile</h2>
+        <p class="panel-subtitle">Update your display name, email address, or profile photo.</p>
+
+        <form method="POST" action="" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+                {{ form.username.label(class="form-label") }}
+                {{ form.username(class="form-control") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.picture.label(class="form-label") }}
+                {{ form.picture(class="form-control") }}
+            </div>
+
+            <div class="mb-3" style="padding-top:0.5rem;">
+                {{ form.submit(class="ink-btn") }}
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}

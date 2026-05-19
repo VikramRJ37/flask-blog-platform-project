@@ -1,11 +1,140 @@
 {% extends "base.html" %}
+{% block title %}Write a post — The Inkwell{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .compose-wrap {
+        max-width: 760px;
+        margin: 0 auto;
+    }
+
+    .compose-header {
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .compose-header .kicker {
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--accent);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    .compose-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    /* Custom title field — larger, editorial feel */
+    .title-input {
+        width: 100%;
+        border: none;
+        border-bottom: 2px solid var(--border);
+        background: transparent;
+        font-family: 'Playfair Display', serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        padding: 0.5rem 0 0.75rem;
+        outline: none;
+        color: var(--ink);
+        transition: border-color 0.2s;
+        margin-bottom: 1.75rem;
+    }
+
+    .title-input:focus {
+        border-color: var(--ink);
+    }
+
+    .title-input::placeholder {
+        color: var(--border);
+    }
+
+    /* Body textarea */
+    .body-textarea {
+        width: 100%;
+        min-height: 400px;
+        border: 1.5px solid var(--border);
+        background: #fff;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 1.05rem;
+        line-height: 1.8;
+        padding: 1.25rem 1.5rem;
+        outline: none;
+        color: var(--ink);
+        resize: vertical;
+        transition: border-color 0.2s;
+    }
+
+    .body-textarea:focus {
+        border-color: var(--ink);
+    }
+
+    .body-textarea::placeholder {
+        color: var(--border);
+    }
+
+    .compose-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+    }
+
+    .char-count {
+        font-size: 0.8rem;
+        color: var(--muted);
+    }
+
+    .field-label {
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-weight: 500;
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-    <form method="post">
-        {{form.hidden_tag()}}
-        <div class="form-group">
-            {{form.title.label}} {{form.title}}<br>
-            {{form.text.label}} {{form.text}}<br>
-            {{form.submit}}
+<div class="compose-wrap">
+    <div class="compose-header">
+        <p class="kicker">New essay</p>
+        <h1>Write your story</h1>
+    </div>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <label class="field-label" for="title">Title</label>
+        {{ form.title(class="title-input", placeholder="Give your piece a compelling title…", id="title") }}
+
+        <label class="field-label" for="text">Your writing</label>
+        {{ form.text(class="body-textarea", placeholder="Begin writing here. Your words matter.", id="text") }}
+
+        <div class="compose-actions">
+            <span class="char-count" id="char-count">0 characters</span>
+            {{ form.submit(class="ink-btn") }}
         </div>
     </form>
+</div>
+
+<script>
+    const textarea = document.getElementById('text');
+    const counter = document.getElementById('char-count');
+    if (textarea && counter) {
+        textarea.addEventListener('input', () => {
+            const n = textarea.value.length;
+            counter.textContent = n.toLocaleString() + ' character' + (n !== 1 ? 's' : '');
+        });
+    }
+</script>
 {% endblock %}

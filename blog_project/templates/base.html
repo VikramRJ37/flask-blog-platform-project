@@ -3,33 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{% block title %}The Inkwell{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0f0e0d;
+            --parchment: #f7f3ee;
+            --cream: #ede8e1;
+            --accent: #c0392b;
+            --accent-muted: #e8d5d3;
+            --muted: #7a7570;
+            --border: #d8d0c8;
+            --card-bg: #ffffff;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--parchment);
+            color: var(--ink);
+            min-height: 100vh;
+        }
+
+        /* ── NAV ── */
+        .site-nav {
+            background: var(--ink);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .site-nav .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            height: 60px;
+        }
+
+        .site-nav .brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: 0.02em;
+        }
+
+        .site-nav .brand span {
+            color: var(--accent);
+        }
+
+        .site-nav .nav-links {
+            display: flex;
+            gap: 0.25rem;
+            align-items: center;
+        }
+
+        .site-nav .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 500;
+            padding: 0.5rem 0.9rem;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+
+        .site-nav .nav-links a:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .site-nav .nav-links a.nav-cta {
+            background: var(--accent);
+            color: #fff;
+            margin-left: 0.5rem;
+        }
+
+        .site-nav .nav-links a.nav-cta:hover {
+            background: #a93226;
+        }
+
+        /* ── PAGE WRAPPER ── */
+        .page-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 2rem 5rem;
+        }
+
+        /* ── FLASH MESSAGES ── */
+        .flash-zone {
+            max-width: 1100px;
+            margin: 1rem auto 0;
+            padding: 0 2rem;
+        }
+
+        .flash-zone .alert {
+            border-radius: 0;
+            border-left: 4px solid var(--accent);
+            background: var(--accent-muted);
+            color: var(--ink);
+            border-top: none; border-right: none; border-bottom: none;
+            font-size: 0.9rem;
+        }
+
+        /* ── FOOTER ── */
+        .site-footer {
+            background: var(--ink);
+            color: #888;
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            margin-top: auto;
+        }
+
+        .site-footer span { color: var(--accent); }
+
+        /* ── REUSABLE COMPONENTS ── */
+        .ink-btn {
+            display: inline-block;
+            background: var(--ink);
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 500;
+            padding: 0.7rem 1.6rem;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .ink-btn:hover { background: #333; color: #fff; }
+
+        .ink-btn-red {
+            background: var(--accent);
+        }
+
+        .ink-btn-red:hover { background: #a93226; }
+
+        .ink-btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--ink);
+            color: var(--ink);
+        }
+
+        .ink-btn-outline:hover { background: var(--ink); color: #fff; }
+
+        /* ── FORMS ── */
+        .ink-form .form-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: var(--muted);
+            margin-bottom: 0.35rem;
+            display: block;
+        }
+
+        .ink-form .form-control,
+        .ink-form input[type="text"],
+        .ink-form input[type="email"],
+        .ink-form input[type="password"],
+        .ink-form input[type="file"],
+        .ink-form textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 0;
+            background: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            color: var(--ink);
+            transition: border-color 0.2s;
+            outline: none;
+            appearance: none;
+        }
+
+        .ink-form .form-control:focus,
+        .ink-form input:focus,
+        .ink-form textarea:focus {
+            border-color: var(--ink);
+            box-shadow: none;
+        }
+
+        .ink-form .mb-3 { margin-bottom: 1.5rem; }
+
+        /* ── DIVIDER ── */
+        .ink-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+
+        /* ── PAGE HEADER ── */
+        .page-header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            line-height: 1.15;
+            font-weight: 700;
+        }
+
+        .page-header .kicker {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+    {% block extra_styles %}{% endblock %}
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link" aria-current="page" href="{{url_for('core.index')}}">HOME</a>
-        <a class="nav-link" aria-current="page" href="{{url_for('core.info')}}">INFO</a>
-        {% if current_user.is_authenticated %}
-        <a class="nav-link" aria-current="page" href="{{url_for('users.logout')}}">LOG_OUT</a>
-        <a class="nav-link" aria-current="page" href="{{url_for('users.account')}}">ACCOUNT</a>
-        <a class="nav-link" aria-current="page" href="{{url_for('blog_posts.create_post')}}">CREATE_POST</a>
-        {% else %}
-        <a class="nav-link" aria-current="page" href="{{url_for('users.login')}}">LOGIN</a>
-        <a class="nav-link" aria-current="page" href="{{url_for('users.register')}}">REGISTER</a>
-        {% endif %}
-      </div>
-    </div>
-  </div>
-</nav>
-<div class="container">
-    {% block content %}
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a class="brand" href="{{ url_for('core.index') }}">The<span>Ink</span>well</a>
+            <div class="nav-links">
+                <a href="{{ url_for('core.index') }}">Home</a>
+                <a href="{{ url_for('core.info') }}">About</a>
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('users.account') }}">Account</a>
+                    <a href="{{ url_for('blog_posts.create_post') }}" class="nav-cta">+ New Post</a>
+                    <a href="{{ url_for('users.logout') }}">Log out</a>
+                {% else %}
+                    <a href="{{ url_for('users.login') }}">Log in</a>
+                    <a href="{{ url_for('users.register') }}" class="nav-cta">Join</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
 
-    {% endblock %}
-</div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-zone">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="page-wrap">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer class="site-footer">
+        <p>© 2025 The<span>Ink</span>well — crafted with Flask &amp; passion</p>
+    </footer>
 </body>
 </html>

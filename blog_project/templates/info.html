@@ -1,4 +1,105 @@
 {% extends "base.html" %}
+{% block title %}About — The Inkwell{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .info-layout {
+        max-width: 680px;
+        margin: 0 auto;
+    }
+
+    .info-kicker {
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--accent);
+        font-weight: 500;
+        margin-bottom: 0.75rem;
+    }
+
+    .info-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .info-body {
+        font-size: 1.05rem;
+        line-height: 1.85;
+        color: #2a2520;
+    }
+
+    .info-body p { margin-bottom: 1.5rem; }
+
+    .info-body .pull-quote {
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        font-size: 1.5rem;
+        color: var(--ink);
+        border-left: 4px solid var(--accent);
+        padding-left: 1.5rem;
+        margin: 2.5rem 0;
+        line-height: 1.4;
+    }
+
+    .tech-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    .tech-pill {
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 500;
+        padding: 0.35rem 0.85rem;
+        background: var(--cream);
+        color: var(--ink);
+        border: 1px solid var(--border);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<h3>welcome to the blog post site here the web page full made up with python flask as a back ground i used less UI this web page is only build up with backend logic</h3>
+<div class="info-layout">
+    <p class="info-kicker">About this site</p>
+    <h1 class="info-title">Built to write.<br>Built to read.</h1>
+
+    <div class="info-body">
+        <p>
+            The Inkwell is a personal blogging platform built entirely with Python and Flask.
+            Every route, form, model, and view was crafted from scratch — no shortcuts, no
+            CMS, just clean backend logic and a love for the written word.
+        </p>
+
+        <blockquote class="pull-quote">
+            "The best writing platform is the one you build yourself."
+        </blockquote>
+
+        <p>
+            This project focuses on getting the fundamentals right: user authentication,
+            session management, image uploads, paginated post listings, and full CRUD
+            for blog posts. The UI is intentionally lean — the content is the star.
+        </p>
+
+        <p style="font-size:0.85rem; color:var(--muted); margin-bottom:0.5rem; letter-spacing:0.08em; text-transform:uppercase; font-weight:500;">
+            Built with
+        </p>
+        <div class="tech-stack">
+            <span class="tech-pill">Python</span>
+            <span class="tech-pill">Flask</span>
+            <span class="tech-pill">SQLAlchemy</span>
+            <span class="tech-pill">Flask-Login</span>
+            <span class="tech-pill">WTForms</span>
+            <span class="tech-pill">Bootstrap 5</span>
+            <span class="tech-pill">Jinja2</span>
+        </div>
+    </div>
+</div>
 {% endblock %}
