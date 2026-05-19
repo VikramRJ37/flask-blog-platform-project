@@ -7,7 +7,7 @@ from flask_login import LoginManager
 app=Flask(__name__)
 app.config['SECRET_KEY']='mykey'
 
-#db_setup------------
+#__________________db_setup______________
 basedir=os.path.abspath(os.path.dirname(__file__))
 app.config["SQLALCHEMY_DATABASE_URI"]='sqlite:///'+os.path.join(basedir,'data.sqlite')
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
@@ -15,14 +15,14 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
 db=SQLAlchemy(app)
 Migrate(app,db)
 
-#loginconfig
+#____________loginconfig______________
 
 login_manager=LoginManager()
 login_manager.init_app(app)
 login_manager.login_view='users.login'
 
 
-#blue print-------------------
+#___________________blue print___________________
 from blog_project.core.views import core
 from blog_project.error_pages.handlers import error_pages
 from blog_project.user.views import users
