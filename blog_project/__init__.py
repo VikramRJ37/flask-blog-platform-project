@@ -9,7 +9,7 @@ app.config['SECRET_KEY']='mykey'
 
 #__________________db_setup______________
 basedir=os.path.abspath(os.path.dirname(__file__))
-app.config["SQLALCHEMY_DATABASE_URI"]='sqlite:///'+os.path.join(basedir,'data.sqlite')
+app.config["SQLALCHEMY_DATABASE_URI"]=os.environ.get("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
 
 db=SQLAlchemy(app)
@@ -21,6 +21,11 @@ login_manager=LoginManager()
 login_manager.init_app(app)
 login_manager.login_view='users.login'
 
+
+from blog_project.models import User, Blogpost
+
+with app.app_context():
+    db.create_all()
 
 #___________________blue print___________________
 from blog_project.core.views import core
