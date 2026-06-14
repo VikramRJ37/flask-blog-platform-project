@@ -8,8 +8,8 @@ app=Flask(__name__)
 app.config['SECRET_KEY']='mykey'
 
 #__________________db_setup______________
-
-app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://falsk_blog_site_user:Smt6wWP9mvWCTPWxF3iLM4wchZKurGXq@dpg-d89eqf5ckfvc738i9b50-a.oregon-postgres.render.com/falsk_blog_site'
+basedir=os.path.abspath(os.path.dirname(__file__))
+app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
 
 db=SQLAlchemy(app)
@@ -23,6 +23,8 @@ login_manager.login_view='users.login'
 
 from blog_project.models import User, Blogpost
 
+with app.app_context():
+    db.create_all()
 
 
 #___________________blue print___________________
